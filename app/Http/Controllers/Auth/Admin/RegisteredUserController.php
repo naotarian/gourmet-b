@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -13,6 +13,10 @@ use Validator;
 
 class RegisteredUserController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('auth:admin'); // 'auth:admin'に変更
+    }
     /**
      * Handle an incoming registration request.
      *
@@ -23,6 +27,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info('きた');
         \Log::info($request);
         $aes_key = config('app.aes_key');
         $aes_type = config('app.aes_type');
@@ -38,7 +43,7 @@ class RegisteredUserController extends Controller
         $messages = array();
         $rules['name'] = ['required', 'string', 'max:255'];
         $rules['email_normal'] = ['required', 'string', 'email:strict,dns,spoof', 'max:255'];
-        $rules['email'] = ['unique:users'];
+        $rules['email'] = ['unique:admins'];
         $rules['password'] = ['required', 'string', 'confirmed', 'min:8'];
         //name
         $messages['name.max'] = '氏名は255文字以内で入力してください。';
@@ -56,21 +61,30 @@ class RegisteredUserController extends Controller
         $messages['password.min'] = 'パスワードは最低8文字で設定してください。';
         $validator = Validator::make($datas, $rules, $messages);
         if ($validator->fails()) {
-            \Log::info(gettype($validator->errors()));
             return response()->json($validator->messages());
         }
-        Auth::login($user = User::create([
+        Auth::login($user = Admin::create([
             'name' => openssl_encrypt($request->name, $aes_type, $aes_key),
             'email' => openssl_encrypt($request->email, $aes_type, $aes_key),
             'password' => Hash::make($request->password),
         ]));
+        // $user->authenticate('admin');
+
+        // $user->session()->regenerate();
+
+        // Auth::login($user);
+        \Log::info(Auth::user());
+        // Auth::guard('admin')->attempt(json_decode($user, true));
+        // \Log::info(Auth::guard('admin')->check());
         $docode_user = json_decode($user, true);
         $docode_user['email'] = openssl_decrypt($docode_user['email'], $aes_type, $aes_key);
         $docode_user['name'] = openssl_decrypt($docode_user['name'], $aes_type, $aes_key);
         $docode_user = json_encode($docode_user);
+        \Log::info('1111');
+        \Log::info($request->user());
         $request->user()->sendEmailVerificationNotification();
         event(new Registered($docode_user));
-
+        \Log::info('test');
         return response()->noContent();
     }
 }

@@ -14,5 +14,9 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-Route::redirect('/', config('app.frontend_url'));
-require __DIR__.'/auth.php';
+Route::redirect('/', config('app.frontend_url'))->name('top');
+Route::redirect('/login', config('app.frontend_url') . '/login')->name('login');
+require __DIR__ . '/auth.php';
+Route::prefix('admin')->name('admin.')->group(function () {
+  require __DIR__ . '/admin.php';
+});

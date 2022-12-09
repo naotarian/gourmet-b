@@ -19,12 +19,14 @@ class EnsureEmailIsVerified
      */
     public function handle($request, Closure $next, $redirectToRoute = null)
     {
-        if (! $request->user() ||
+        if (
+            !$request->user() ||
             ($request->user() instanceof MustVerifyEmail &&
-            ! $request->user()->hasVerifiedEmail())) {
+                !$request->user()->hasVerifiedEmail())
+        ) {
             return $request->expectsJson()
-                    ? response()->json(['status' => 'email_verification_required', 'message' => 'Your email address is not verified.'], 409)
-                    : Redirect::guest(URL::route($redirectToRoute ?: 'verification.notice'));
+                ? response()->json(['status' => 'email_verification_required', 'message' => 'Your email address is not verified.'], 409)
+                : Redirect::guest(URL::route($redirectToRoute ?: 'verification.notice'));
         }
 
         return $next($request);

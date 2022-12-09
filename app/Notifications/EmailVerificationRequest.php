@@ -14,14 +14,28 @@ class EmailVerificationRequest extends FormRequest
      */
     public function authorize()
     {
-        if (! hash_equals((string) $this->route('id'),
-        (string) $this->user()->getKey())) {
+        \Log::info('#############################');
+        \Log::info($this->user());
+        \Log::info((string) $this->route('hash'));
+        \Log::info(sha1($this->user()->getEmailForVerification()));
+        \Log::info($this->user()->getEmailForVerification());
+        \Log::info('#############################');
+        \Log::info('---------------------------------');
+        \Log::info($this->route('id'));
+        \Log::info($this->user()->getKey());
+        \Log::info('---------------------------------');
+        if (!hash_equals(
+            (string) $this->route('id'),
+            (string) $this->user()->getKey()
+        )) {
             return false;
         }
         $aes_key = config('app.aes_key');
         $aes_type = config('app.aes_type');
-        if (! hash_equals((string) $this->route('hash'),
-            sha1($this->user()->getEmailForVerification()))) {
+        if (!hash_equals(
+            (string) $this->route('hash'),
+            sha1($this->user()->getEmailForVerification())
+        )) {
             return false;
         }
 
@@ -47,7 +61,7 @@ class EmailVerificationRequest extends FormRequest
      */
     public function fulfill()
     {
-        if (! $this->user()->hasVerifiedEmail()) {
+        if (!$this->user()->hasVerifiedEmail()) {
             $this->user()->markEmailAsVerified();
 
             event(new Verified($this->user()));

@@ -14,6 +14,10 @@ use App\Http\Controllers\UserController;
 |
 */
 
+// Route::middleware(['auth:sanctum', 'verified'])->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/user', function (Request $request) {
     return $request->user();
 });
