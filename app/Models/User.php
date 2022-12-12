@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Notifications\ResetPassword;
+use App\Notifications\User\ResetPassword;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Notifications\User\VerifyEmail;
 

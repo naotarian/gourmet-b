@@ -21,11 +21,19 @@ class AuthenticatedSessionController extends Controller
         $aes_key = config('app.aes_key');
         $aes_type = config('app.aes_type');
         $request['email'] = openssl_encrypt($request['email'], $aes_type, $aes_key);
-        $request->authenticate();
+        // Auth::guard('admin')->login($request);
+        \Log::info($request);
+        $credentials = $request->only(['email', 'password']);
+        if (Auth::guard('admin')->attempt($credentials)) {
+            // ログインしたら管理画面トップにリダイレクト
+            $request->session()->regenerate();
+            return response()->noContent();
+        }
 
-        $request->session()->regenerate();
+        // return back()->withErrors([
+        //     'login' => ['ログインに失敗しました'],
+        // ]);
 
-        return response()->noContent();
     }
 
     /**

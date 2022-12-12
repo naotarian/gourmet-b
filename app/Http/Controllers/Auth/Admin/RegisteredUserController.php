@@ -63,28 +63,24 @@ class RegisteredUserController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages());
         }
-        Auth::login($user = Admin::create([
+        $user = Admin::create([
             'name' => openssl_encrypt($request->name, $aes_type, $aes_key),
             'email' => openssl_encrypt($request->email, $aes_type, $aes_key),
             'password' => Hash::make($request->password),
-        ]));
+        ]);
+        Auth::guard('admin')->login($user);
         // $user->authenticate('admin');
 
         // $user->session()->regenerate();
 
         // Auth::login($user);
-        \Log::info(Auth::user());
-        // Auth::guard('admin')->attempt(json_decode($user, true));
+        // \Log::info(Auth::user());
         // \Log::info(Auth::guard('admin')->check());
-        $docode_user = json_decode($user, true);
-        $docode_user['email'] = openssl_decrypt($docode_user['email'], $aes_type, $aes_key);
-        $docode_user['name'] = openssl_decrypt($docode_user['name'], $aes_type, $aes_key);
-        $docode_user = json_encode($docode_user);
-        \Log::info('1111');
-        \Log::info($request->user());
-        $request->user()->sendEmailVerificationNotification();
-        event(new Registered($docode_user));
-        \Log::info('test');
+        // $docode_user = json_decode($user, true);
+        // $docode_user['email'] = openssl_decrypt($docode_user['email'], $aes_type, $aes_key);
+        // $docode_user['name'] = openssl_decrypt($docode_user['name'], $aes_type, $aes_key);
+        // $docode_user = json_encode($docode_user);
+        event(new Registered($user));
         return response()->noContent();
     }
 }

@@ -19,6 +19,7 @@ class PasswordResetLinkController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info('reset');
         $request->validate([
             'email' => 'required|email',
         ]);
@@ -28,7 +29,7 @@ class PasswordResetLinkController extends Controller
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $request['email'] = openssl_encrypt($request['email'], $aes_type, $aes_key);
-        $status = Password::sendResetLink(
+        $status = Password::broker('admins')->sendResetLink(
             $request->only('email')
         );
 
