@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\Admin\RestaurantController as AdminRestaurant;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,4 +28,12 @@ Route::middleware(['auth:admin', 'verified'])->get('/admin/user', function (Requ
 Route::controller(UserController::class)->group(function () {
     Route::post('/user_info', 'user_info');
     Route::get('/my_page', 'my_page');
+});
+
+Route::prefix('admin')->group(function () {
+    Route::prefix('restaurant')->group(function () {
+        Route::controller(AdminRestaurant::class)->group(function () {
+            Route::get('/register', 'registerFetch');
+        });
+    });
 });
