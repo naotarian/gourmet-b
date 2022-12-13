@@ -4,6 +4,7 @@ namespace App\Usecases\Restaurant;
 
 use App\Models\MainCategory;
 use App\Models\SubCategory;
+use App\Models\Budget;
 
 class RegisterFetch
 {
@@ -11,11 +12,12 @@ class RegisterFetch
   {
     $main_categories = MainCategory::all()->toArray();
     $sub_categories = SubCategory::all()->toArray();
+    $budgets = Budget::all()->toArray();
     $response = [
       'main_categories' => $main_categories,
-      'sub_categories' => $sub_categories
+      'sub_categories' => $sub_categories,
+      'budgets' => $budgets
     ];
-    \Log::info($response);
     return $response;
   }
 }

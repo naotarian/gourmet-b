@@ -17,8 +17,13 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('main_categories')->truncate();
         DB::table('sub_categories')->truncate();
+        DB::table('budgets')->truncate();
+        DB::table('users')->truncate();
+        DB::table('admins')->truncate();
         $this->call([
-            CategorySeeder::class
+            CategorySeeder::class,
+            BudgetSeeder::class,
+            UserSeeder::class
         ]);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

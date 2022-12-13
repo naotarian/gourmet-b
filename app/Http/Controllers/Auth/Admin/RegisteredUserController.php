@@ -27,15 +27,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        \Log::info('きた');
-        \Log::info($request);
         $aes_key = config('app.aes_key');
         $aes_type = config('app.aes_type');
-        // $validator = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'password' => 'required|string|confirmed|min:8',
-        // ]);
         $datas = $request->all();
         $datas['email'] = openssl_encrypt($request->email, $aes_type, $aes_key);
         $datas['email_normal'] = $request->email;
@@ -69,17 +62,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
         Auth::guard('admin')->login($user);
-        // $user->authenticate('admin');
-
-        // $user->session()->regenerate();
-
-        // Auth::login($user);
-        // \Log::info(Auth::user());
-        // \Log::info(Auth::guard('admin')->check());
-        // $docode_user = json_decode($user, true);
-        // $docode_user['email'] = openssl_decrypt($docode_user['email'], $aes_type, $aes_key);
-        // $docode_user['name'] = openssl_decrypt($docode_user['name'], $aes_type, $aes_key);
-        // $docode_user = json_encode($docode_user);
         event(new Registered($user));
         return response()->noContent();
     }

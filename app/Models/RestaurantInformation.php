@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SubCategory extends Model
+class RestaurantInformation extends Model
 {
     use HasFactory;
     use softDeletes;
+    protected $table = 'restaurant_informations';
 }
