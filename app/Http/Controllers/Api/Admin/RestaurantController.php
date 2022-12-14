@@ -5,14 +5,21 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\UseCases\Restaurant\RegisterFetch;
+use App\UseCases\Restaurant\RegisterPost;
+use Illuminate\Support\Facades\Auth;
 
 class RestaurantController extends Controller
 {
-    public function registerFetch(RegisterFetch $RegisterFetch)
+    public function registerFetch(Request $req)
     {
-        \Log::info('test');
         $obj = new RegisterFetch;
         $res = $obj();
+        return response()->json($res);
+    }
+    public function register(Request $req)
+    {
+        $obj = new RegisterPost;
+        $res = $obj($req);
         return response()->json($res);
     }
 }
