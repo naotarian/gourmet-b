@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\UseCases\Restaurant\RegisterFetch;
 use App\UseCases\Restaurant\RegisterPost;
-use Illuminate\Support\Facades\Auth;
+use App\UseCases\Restaurant\InitializeFetch;
 
 class RestaurantController extends Controller
 {
@@ -19,6 +19,12 @@ class RestaurantController extends Controller
     public function register(Request $req)
     {
         $obj = new RegisterPost;
+        $res = $obj($req);
+        return response()->json($res);
+    }
+
+    public function initializeFetch(Request $req) {
+        $obj = new InitializeFetch;
         $res = $obj($req);
         return response()->json($res);
     }

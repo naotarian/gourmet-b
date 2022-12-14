@@ -30,10 +30,11 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/my_page', 'my_page');
 });
 
-Route::middleware(['auth:admin', 'verified'])->prefix('admin')->group(function () {
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::prefix('restaurant')->group(function () {
         Route::controller(AdminRestaurant::class)->group(function () {
             Route::get('/register', 'registerFetch');
+            Route::get('/initialize', 'initializeFetch');
             Route::post('/register', 'register');
         });
     });
