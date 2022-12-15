@@ -36,6 +36,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
             Route::get('/register', 'registerFetch');
             Route::get('/initialize', 'initializeFetch');
             Route::post('/register', 'register');
+            Route::get('/list', 'list');
+            Route::get('/information', 'information');
+            Route::post('/display_change', 'display_change');
         });
     });
 });
