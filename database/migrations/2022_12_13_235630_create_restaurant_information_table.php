@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_user_id')->comment('管理アカウントID');
             $table->string('restaurant_name')->comment('店舗名');
             $table->string('restaurant_email')->nullable()->default(null)->comment('店舗メールアドレス');
+            $table->string('restaurant_tel')->nullable()->default(null)->comment('店舗電話番号');
             $table->json('notification_email')->nullable()->default(null)->comment('通知用メールアドレス');
             $table->string('post_number')->nullable()->default(null)->comment('店舗郵便番号');
             $table->string('address')->nullable()->default(null)->comment('店舗住所');
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->integer('display_order')->nullable()->default(1)->comment('表示順');
             $table->boolean('is_reserve')->nullable()->default(false)->comment('予約表示可能フラグ');
             $table->boolean('is_display')->nullable()->default(false)->comment('予約サイト表示フラグ');
+            $table->boolean('is_take_out')->nullable()->default(false)->comment('テイクアウトフラグ');
             $table->string('representative_name')->nullable()->default(null)->comment('店舗代表者名');
             $table->string('representative_tel')->nullable()->default(null)->comment('店舗代表者電話番号');
             $table->text('feature', 3000)->nullable()->default(null)->comment('店舗の特徴・お客様へのアピールポイント');
