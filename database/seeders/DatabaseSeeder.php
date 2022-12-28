@@ -20,10 +20,12 @@ class DatabaseSeeder extends Seeder
         DB::table('budgets')->truncate();
         DB::table('users')->truncate();
         DB::table('admins')->truncate();
+        DB::table('staff_colors')->truncate();
         $this->call([
             CategorySeeder::class,
             BudgetSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            StaffColorSeeder::class
         ]);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

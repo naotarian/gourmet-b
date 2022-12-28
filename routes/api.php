@@ -41,4 +41,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
             Route::post('/display_change', 'display_change');
         });
     });
+    Route::controller(AdminRestaurant::class)->group(function () {
+        Route::post('/imageUpload', 'imageUpload');
+    });
 });

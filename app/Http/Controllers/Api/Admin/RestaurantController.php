@@ -46,4 +46,31 @@ class RestaurantController extends Controller
         $res = ['newSession' => $new_session];
         return response()->json($res);
     }
+
+    public function imageUpload(Request $req) {
+        // \Log::info($req);
+        try {
+            preg_match('/data:image\/(\w+);base64,/', $req['file'], $matches);
+            $extension = $matches[1];
+
+            $img = preg_replace('/^data:image.*base64,/', '', $req['file']);
+            $img = str_replace(' ', '+', $img);
+            $fileData = base64_decode($img);
+
+            $dir = storage_path() . '/app/images/';
+            $fileName = md5($img);
+            $path = $dir.$fileName.'.'.$extension;
+            if(!file_exists($dir)) mkdir($dir, 0777, true);
+            file_put_contents($path, $fileData);
+            $resize_image = \Image::make($path)->crop($req['backCrop']['width'], $req['backCrop']['height'], $req['backCrop']['x'], $req['backCrop']['y'])->save($path);
+
+            return $path;
+
+        } catch (Exception $e) {
+            Log::error($e);
+            return null;
+        }
+        $res = ['msg' => 'msg'];
+        return response()->json($res);
+    }
 }

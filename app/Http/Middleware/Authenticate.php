@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Route;
 
 class Authenticate extends Middleware
 {
@@ -13,6 +15,16 @@ class Authenticate extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return string|null
      */
+
+
+    // protected function unauthenticated($request, array $guards)
+    // {
+    //     \Log::info('kkk');
+    //     return redirect()->route('adminLogin');
+    //     throw new AuthenticationException(
+    //         'Unauthenticated.', $guards, $this->redirectTo($request, $guards) // $guardsを第二引数に追加
+    //     );
+    // }
     protected function redirectTo($request)
     {
         \Log::info($request->expectsJson());
