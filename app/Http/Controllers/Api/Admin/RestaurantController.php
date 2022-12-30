@@ -9,6 +9,9 @@ use App\UseCases\Restaurant\RegisterPost;
 use App\UseCases\Restaurant\InitializeFetch;
 use App\UseCases\Restaurant\List;
 use App\UseCases\Restaurant\Information;
+use App\Http\Controllers\Api\CommonController;
+//Models
+use App\Models\Slide;
 
 class RestaurantController extends Controller
 {
@@ -48,22 +51,58 @@ class RestaurantController extends Controller
     }
 
     public function imageUpload(Request $req) {
-        // \Log::info($req);
         try {
-            preg_match('/data:image\/(\w+);base64,/', $req['file'], $matches);
-            $extension = $matches[1];
-
-            $img = preg_replace('/^data:image.*base64,/', '', $req['file']);
-            $img = str_replace(' ', '+', $img);
-            $fileData = base64_decode($img);
-
-            $dir = storage_path() . '/app/images/';
-            $fileName = md5($img);
-            $path = $dir.$fileName.'.'.$extension;
-            if(!file_exists($dir)) mkdir($dir, 0777, true);
-            file_put_contents($path, $fileData);
-            $resize_image = \Image::make($path)->crop($req['backCrop']['width'], $req['backCrop']['height'], $req['backCrop']['x'], $req['backCrop']['y'])->save($path);
-
+            if(!$req->session()->get('active_restaurant_id')) return;
+            $store_id = $req->session()->get('active_restaurant_id');
+            $admin_user = $req->user();
+            //ファイルアップロードがある場合
+            if($req['file']) {
+                $count = 0;
+                foreach($req['file'] as $key => $f) {
+                    if(!$f) continue;
+                    $count++;
+                    preg_match('/data:image\/(\w+);base64,/', $f, $matches);
+                    //拡張子
+                    $extension = $matches[1];
+        
+                    $img = preg_replace('/^data:image.*base64,/', '', $f);
+                    $img = str_replace(' ', '+', $img);
+                    $fileData = base64_decode($img);
+                    //file保存先
+                    $common = new CommonController;
+                    $save_dir = $common->saveFileDrive();
+                    $dir = $save_dir . $admin_user->id . '/' . $store_id . '/';
+                    //ファイル名を設定
+                    $fileName = uniqid(rand());
+                    //最終的な保存path
+                    $path = $dir.$fileName.'.'.$extension;
+                    //ディレクトリなければ作成
+                    if(!file_exists($dir)) mkdir($dir, 0777, true);
+                    //保存
+                    file_put_contents($path, $fileData);
+                    //crop
+                    $resize_image = \Image::make($path)->crop($req['backCrop'][$key]['width'], $req['backCrop'][$key]['height'], $req['backCrop'][$key]['x'], $req['backCrop'][$key]['y'])->save($path);
+                    //1枚目のアップロード画像
+                    if($count === 1) {
+                        $slide = Slide::where('store_id', $store_id)->first();
+                        if(!$slide) {
+                            //新規レコード
+                            $slide = new Slide;
+                            $slide['store_id'] = $store_id;
+                            $paths = [];
+                        } else {
+                            //既にある場合
+                            $paths = $slide['image_path'];
+                        }
+                    }
+                    $paths[$key] = $path;
+                }
+                //pathsで上書き
+                $slide['image_path'] = $paths;
+                $slide->save();
+                //使用していない画像は削除
+                foreach (glob($dir . '*') as $file) if(is_file($file) && !in_array($file, $paths)) unlink($file);
+            }
             return $path;
 
         } catch (Exception $e) {

@@ -16,6 +16,7 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
     'aes_key' => env('AES_KEY', ''),
     'aes_type' => env('AES_TYPE', ''),
+    'save_dir' => env('SAVE_DIR', ''),
 
     /*
     |--------------------------------------------------------------------------
