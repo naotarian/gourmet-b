@@ -26,7 +26,7 @@ class BudgetSeeder extends Seeder
             '10000円~',
             '設定無し'
           ];
-          foreach ($budgets as $key => $budget) {
+        foreach ($budgets as $key => $budget) {
             Budget::create([
                 'price' => $budget,
             ]);

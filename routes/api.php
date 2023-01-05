@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\Admin\RestaurantController as AdminRestaurant;
+use App\Http\Controllers\Api\Portal\PortalTopController as PortalTop;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,5 +44,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     });
     Route::controller(AdminRestaurant::class)->group(function () {
         Route::post('/imageUpload', 'imageUpload');
+    });
+});
+Route::controller(PortalTop::class)->group(function () {
+    Route::prefix('portal')->group(function () {
+        Route::get('/top', 'top');
     });
 });
