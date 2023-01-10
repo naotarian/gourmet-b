@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name')->comment('都道府県名');
             $table->unsignedBigInteger('area_id')->comment('地方ID');
             $table->integer('prefecture_number')->comment('都道府県No');
+            $table->string('alias')->comment('検索記号');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('area_id')->references('id')->on('areas')->onUpdate('CASCADE')->onDelete('CASCADE');

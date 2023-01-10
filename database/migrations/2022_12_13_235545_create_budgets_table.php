@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->string('price')->nullable()->comment('予算');
+            $table->string('alias')->comment('検索記号');
             $table->timestamps();
             $table->softDeletes();
         });

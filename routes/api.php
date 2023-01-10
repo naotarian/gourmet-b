@@ -49,5 +49,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 Route::controller(PortalTop::class)->group(function () {
     Route::prefix('portal')->group(function () {
         Route::get('/top', 'top');
+        Route::post('/list', 'list');
     });
 });

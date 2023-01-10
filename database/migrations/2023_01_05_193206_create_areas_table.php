@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->comment('エリア名');
             $table->integer('area_number')->comment('エリア番号');
+            $table->string('alias')->comment('検索記号');
             $table->timestamps();
             $table->softDeletes();
             $table->comment('エリアテーブル');

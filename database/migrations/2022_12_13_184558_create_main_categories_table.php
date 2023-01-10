@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->comment('カテゴリー名');
             $table->integer('display_order')->nullable()->comment('表示順');
+            $table->string('alias')->comment('検索記号');
             $table->timestamps();
             $table->softDeletes();
             $table->comment('メインカテゴリーテーブル');

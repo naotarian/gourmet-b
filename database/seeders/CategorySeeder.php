@@ -21,6 +21,7 @@ class CategorySeeder extends Seeder
             MainCategory::create([
                 'name' => $category,
                 'display_order' => $key + 1,
+                'alias' => 'MC' . ($key + 1),
             ]);
         }
         $categories1 = ['居酒屋', 'ワインバー', 'ダイニングバー', '立ち飲みバー'];
@@ -37,6 +38,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 1,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories2 as $key => $category) {
@@ -44,6 +46,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 2,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories3 as $key => $category) {
@@ -51,6 +54,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 3,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories4 as $key => $category) {
@@ -58,6 +62,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 4,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories5 as $key => $category) {
@@ -65,6 +70,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 5,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories6 as $key => $category) {
@@ -72,6 +78,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 6,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories7 as $key => $category) {
@@ -79,6 +86,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 7,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories8 as $key => $category) {
@@ -86,6 +94,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 8,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
         foreach ($categories9 as $key => $category) {
@@ -93,6 +102,7 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'display_order' => $key + 1,
                 'main_category_id' => 9,
+                'alias' => 'SC' . ($key + 1),
             ]);
         }
     }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('main_category_id')->comment('メインカテゴリーID');
             $table->string('name')->comment('カテゴリー名');
             $table->integer('display_order')->nullable()->comment('表示順');
+            $table->string('alias')->comment('検索記号');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('main_category_id')->references('id')->on('main_categories')->onUpdate('CASCADE')->onDelete('CASCADE');

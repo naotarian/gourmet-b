@@ -20,6 +20,7 @@ class AreaSeeder extends Seeder
             Area::create([
                 'name' => $area,
                 'area_number' => $key + 1,
+                'alias' => 'AR' . ($key + 1),
             ]);
         }
     }

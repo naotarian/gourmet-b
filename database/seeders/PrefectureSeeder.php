@@ -29,48 +29,56 @@ class PrefectureSeeder extends Seeder
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 1,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             } elseif($key <= 13) {
                 Prefecture::create([
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 2,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             } elseif($key <= 19){
                 Prefecture::create([
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 3,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             } elseif($key <= 23){
                 Prefecture::create([
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 4,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             } elseif($key <= 29){
                 Prefecture::create([
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 5,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             } elseif($key <= 34){
                 Prefecture::create([
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 6,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             } elseif($key <= 38){
                 Prefecture::create([
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 7,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             } else {
                 Prefecture::create([
                     'name' => $prefecture,
                     'prefecture_number' => $key + 1,
                     'area_id' => 8,
+                    'alias' => 'PF' . ($key + 1),
                 ]);
             }
         }

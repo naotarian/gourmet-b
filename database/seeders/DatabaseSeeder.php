@@ -23,13 +23,15 @@ class DatabaseSeeder extends Seeder
         DB::table('staff_colors')->truncate();
         DB::table('areas')->truncate();
         DB::table('prefectures')->truncate();
+        DB::table('restaurant_informations')->truncate();
         $this->call([
             CategorySeeder::class,
             BudgetSeeder::class,
             UserSeeder::class,
             StaffColorSeeder::class,
             AreaSeeder::class,
-            PrefectureSeeder::class
+            PrefectureSeeder::class,
+            RestaurantInformationSeeder::class
         ]);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

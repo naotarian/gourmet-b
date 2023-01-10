@@ -29,6 +29,7 @@ class BudgetSeeder extends Seeder
         foreach ($budgets as $key => $budget) {
             Budget::create([
                 'price' => $budget,
+                'alias' => 'PR' . ($key + 1),
             ]);
         }
     }
