@@ -35,4 +35,12 @@ class RestaurantInformation extends Model
         'created_at',
         'updated_at',
     ];
+    public function lunch()
+    {
+        return $this->hasOne(Budget::class, 'id', 'lunch_budget_id');
+    }
+    public function dinner()
+    {
+        return $this->hasOne(Budget::class, 'id', 'dinner_budget_id');
+    }
 }
