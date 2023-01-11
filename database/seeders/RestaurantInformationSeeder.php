@@ -36,6 +36,8 @@ class RestaurantInformationSeeder extends Seeder
                 'dinner_budget_id' => 3,
                 'main_category_id' => 1,
                 'sub_category_id' => 1,
+                'area_id' => 2,
+                'prefecture_id' => 14,
             ],
             [
                 'admin_user_id' => 1,
@@ -56,7 +58,9 @@ class RestaurantInformationSeeder extends Seeder
                 'lunch_budget_id' => 1,
                 'dinner_budget_id' => 3,
                 'main_category_id' => 1,
-                'sub_category_id' => 1,
+                'sub_category_id' => 2,
+                'area_id' => 2,
+                'prefecture_id' => 14,
             ],
         ];
         foreach($datas as $data) {

@@ -34,6 +34,8 @@ return new class extends Migration
             $table->unsignedBigInteger('dinner_budget_id')->nullable()->default(null)->comment('ディナータイム予算');
             $table->unsignedBigInteger('main_category_id')->comment('メインカテゴリーID');
             $table->unsignedBigInteger('sub_category_id')->comment('サブカテゴリーID');
+            $table->unsignedBigInteger('area_id')->nullable()->default(null)->comment('エリアID');
+            $table->unsignedBigInteger('prefecture_id')->nullable()->default(null)->comment('都道府県ID');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('admin_user_id')->references('id')->on('admins')->onUpdate('CASCADE')->onDelete('CASCADE');
@@ -41,6 +43,8 @@ return new class extends Migration
             $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('lunch_budget_id')->references('id')->on('budgets')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('dinner_budget_id')->references('id')->on('budgets')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('prefecture_id')->references('id')->on('prefectures')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('area_id')->references('id')->on('areas')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->comment('店舗情報テーブル');
         });
     }

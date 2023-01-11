@@ -26,7 +26,7 @@ class PortalTopController extends Controller
         $datas = $request['datas'];
         $common = new CommonController;
         $search_modules = $common->changeAlias($datas);
-        $restaurants = RestaurantInformation::where('main_category_id', $search_modules['MC'])
+        $restaurants = RestaurantInformation::where('main_category_id', $search_modules['MC'])->where('prefecture_id', $search_modules['PF'])
         ->where('lunch_budget_id', $search_modules['PR'])
         ->orWhere('dinner_budget_id', $search_modules['PR'])
         ->get();
