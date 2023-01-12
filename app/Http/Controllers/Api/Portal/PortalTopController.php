@@ -34,16 +34,18 @@ class PortalTopController extends Controller
         $search_modules = $search_modules[0];
         //検索
         $restaurant_query = RestaurantInformation::query();
-        if (array_key_exists('MC', $search_modules)) {
-            $restaurant_query->where('main_category_id', $search_modules['MC']);
-        }
-        if (array_key_exists('PF', $search_modules)) {
-            $restaurant_query->where('prefecture_id', $search_modules['PF']);
-        }
+        //料金指定有
+        \Log::info($search_modules);
         if (array_key_exists('PR', $search_modules)) {
-            $restaurant_query->where('lunch_budget_id', $search_modules['PR'])->orWhere('dinner_budget_id', $search_modules['PR'])->with('lunch')->with('dinner');
+            if ($search_modules['PR'] !== 9) $restaurant_query->where('lunch_budget_id', $search_modules['PR'])->orWhere('dinner_budget_id', $search_modules['PR']);
         }
-        $restaurants = $restaurant_query->get();
+        //メインカテゴリー指定有
+        if (array_key_exists('MC', $search_modules)) $restaurant_query->where('main_category_id', $search_modules['MC']);
+        //サブカテゴリー指定有
+        if (array_key_exists('SC', $search_modules)) $restaurant_query->where('sub_category_id', $search_modules['SC']);
+        //都道府県指定有
+        if (array_key_exists('PF', $search_modules)) $restaurant_query->where('prefecture_id', $search_modules['PF']);
+        $restaurants = $restaurant_query->with('lunch')->with('dinner')->get();
         //検索結果件数
         $search_number = $restaurant_query->count();
 
