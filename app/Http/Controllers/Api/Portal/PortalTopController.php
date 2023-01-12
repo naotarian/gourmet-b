@@ -35,7 +35,6 @@ class PortalTopController extends Controller
         //検索
         $restaurant_query = RestaurantInformation::query();
         //料金指定有
-        \Log::info($search_modules);
         if (array_key_exists('PR', $search_modules)) {
             if ($search_modules['PR'] !== 9) $restaurant_query->where('lunch_budget_id', $search_modules['PR'])->orWhere('dinner_budget_id', $search_modules['PR']);
         }
@@ -50,6 +49,13 @@ class PortalTopController extends Controller
         $search_number = $restaurant_query->count();
 
         $contents = ['restaurants' => $restaurants, 'search_number' => $search_number, 'search_modules' => $search_modules, 'query' => $query];
+        return response()->json($contents);
+    }
+
+    public function store_detail(Request $request)
+    {
+        $store = RestaurantInformation::where('unique_code', $request['datas']['code'])->with('lunch')->with('dinner')->with('main_category')->with('sub_category')->first();
+        $contents = ['store' => $store];
         return response()->json($contents);
     }
 }

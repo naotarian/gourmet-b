@@ -44,4 +44,12 @@ class RestaurantInformation extends Model
     {
         return $this->hasOne(Budget::class, 'id', 'dinner_budget_id');
     }
+    public function main_category()
+    {
+        return $this->hasOne(MainCategory::class, 'id', 'main_category_id');
+    }
+    public function sub_category()
+    {
+        return $this->hasOne(SubCategory::class, 'id', 'sub_category_id');
+    }
 }

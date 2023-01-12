@@ -50,5 +50,6 @@ Route::controller(PortalTop::class)->group(function () {
     Route::prefix('portal')->group(function () {
         Route::get('/top', 'top');
         Route::post('/list', 'list');
+        Route::post('/store/detail', 'store_detail');
     });
 });
