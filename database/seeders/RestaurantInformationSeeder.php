@@ -65,10 +65,8 @@ class RestaurantInformationSeeder extends Seeder
             $datas['restaurant_email'] = 'tenpo' . sprintf('%02d', $key) . '@test.com';
             $datas['feature'] = 'テスト' . sprintf('%02d', $key) . 'です。';
             $datas['address_after'] = 'テスト' . sprintf('%02d', $key) . 'ビル';
+            $datas['unique_code'] = hash('crc32', $key + 1);
             RestaurantInformation::create($datas);
         }
-        // foreach ($datas as $data) {
-        //     RestaurantInformation::create($data);
-        // }
     }
 }

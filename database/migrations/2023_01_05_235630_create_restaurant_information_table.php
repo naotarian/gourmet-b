@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('restaurant_informations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('admin_user_id')->comment('管理アカウントID');
+            $table->string('unique_code')->nullable()->comment('ユニークコード');
             $table->string('restaurant_name')->comment('店舗名');
             $table->string('restaurant_email')->nullable()->default(null)->comment('店舗メールアドレス');
             $table->string('restaurant_tel')->nullable()->default(null)->comment('店舗電話番号');

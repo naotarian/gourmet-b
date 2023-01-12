@@ -13,6 +13,7 @@ class RestaurantInformation extends Model
     protected $table = 'restaurant_informations';
     protected $fillable = [
         'admin_user_id',
+        'unique_code',
         'restaurant_name',
         'restaurant_email',
         'notification_email',

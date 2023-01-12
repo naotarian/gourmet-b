@@ -30,6 +30,8 @@ class RegisterPost
       'representative_tel' => $datas['representativeTel'],
       'is_take_out' => $datas['takeOut'],
     ]);
+    $restaurant['unique_code'] = hash('crc32', $restaurant['id']);
+    $restaurant->save();
     return $restaurant;
   }
 }
