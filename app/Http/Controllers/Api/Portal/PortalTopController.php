@@ -54,8 +54,46 @@ class PortalTopController extends Controller
 
     public function store_detail(Request $request)
     {
-        $store = RestaurantInformation::where('unique_code', $request['datas']['code'])->with('lunch')->with('dinner')->with('main_category')->with('sub_category')->first();
-        $contents = ['store' => $store];
+        $store = RestaurantInformation::where('unique_code', $request['datas']['code'])
+            ->with('lunch')
+            ->with('dinner')
+            ->with('main_category')
+            ->with('sub_category')
+            ->with('slide')
+            ->first();
+        $images = array();
+        if ($store['slide']) {
+            foreach ($store['slide']['image_path'] as $key => $slide) {
+                if (!empty($slide) && file_get_contents($slide)) {
+                    switch (true) {
+                        case preg_match('/(\.jpg)$|(\.jpeg)$|(\.JPEG)$|(\.JPG)$/', $slide):
+                            $image_type = "image/jpeg";
+                            break;
+                        case preg_match('/(\.png)$|(\.PNG)$/', $slide):
+                            $image_type = "image/png";
+                            break;
+                        case preg_match('/(\.gif)$|(\.GIF)$/', $slide):
+                            $image_type = "image/gif";
+                            break;
+                        case preg_match('/(\.bmp)$|(\.BMP)$/', $slide):
+                            $image_type = "image/bmp";
+                            break;
+                        default:
+                            $image_type = "";
+                            break;
+                    }
+                    if ($image_type != "") {
+                        $img_base64 = base64_encode(file_get_contents($slide));
+                        $entry_image = "data:" . $image_type . ";base64," . $img_base64;
+                        $images[$key]['original'] = $entry_image;
+                        $images[$key]['thumbnail'] = $entry_image;
+                        // array_push($images['original'], $entry_image);
+                        // array_push($images['thumbnail'], $entry_image);
+                    }
+                }
+            }
+        }
+        $contents = ['store' => $store, 'images' => $images, 'test' => 'aaa'];
         return response()->json($contents);
     }
 }
