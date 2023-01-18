@@ -9,6 +9,8 @@ use App\UseCases\Restaurant\RegisterPost;
 use App\UseCases\Restaurant\InitializeFetch;
 use App\UseCases\Restaurant\List;
 use App\UseCases\Restaurant\Information;
+use App\UseCases\Restaurant\Sales;
+use App\UseCases\Restaurant\SalesUpdate;
 use App\Http\Controllers\Api\CommonController;
 //Models
 use App\Models\Slide;
@@ -42,6 +44,20 @@ class RestaurantController extends Controller
         return response()->json($res);
     }
 
+    public function sales_fetch(Request $req)
+    {
+        $obj = new Sales;
+        $res = $obj($req);
+        return response()->json($res);
+    }
+    public function update_sales(Request $req)
+    {
+        $obj = new SalesUpdate;
+        $res = $obj($req);
+        return response()->json($res);
+        // return response()->json($res);
+    }
+
     public function display_change(Request $req)
     {
         $req->session()->put('active_restaurant_id', $req['id']);
@@ -50,21 +66,22 @@ class RestaurantController extends Controller
         return response()->json($res);
     }
 
-    public function imageUpload(Request $req) {
+    public function imageUpload(Request $req)
+    {
         try {
-            if(!$req->session()->get('active_restaurant_id')) return;
+            if (!$req->session()->get('active_restaurant_id')) return;
             $store_id = $req->session()->get('active_restaurant_id');
             $admin_user = $req->user();
             //ファイルアップロードがある場合
-            if($req['file']) {
+            if ($req['file']) {
                 $count = 0;
-                foreach($req['file'] as $key => $f) {
-                    if(!$f) continue;
+                foreach ($req['file'] as $key => $f) {
+                    if (!$f) continue;
                     $count++;
                     preg_match('/data:image\/(\w+);base64,/', $f, $matches);
                     //拡張子
                     $extension = $matches[1];
-        
+
                     $img = preg_replace('/^data:image.*base64,/', '', $f);
                     $img = str_replace(' ', '+', $img);
                     $fileData = base64_decode($img);
@@ -75,17 +92,17 @@ class RestaurantController extends Controller
                     //ファイル名を設定
                     $fileName = uniqid(rand());
                     //最終的な保存path
-                    $path = $dir.$fileName.'.'.$extension;
+                    $path = $dir . $fileName . '.' . $extension;
                     //ディレクトリなければ作成
-                    if(!file_exists($dir)) mkdir($dir, 0777, true);
+                    if (!file_exists($dir)) mkdir($dir, 0777, true);
                     //保存
                     file_put_contents($path, $fileData);
                     //crop
                     $resize_image = \Image::make($path)->crop($req['backCrop'][$key]['width'], $req['backCrop'][$key]['height'], $req['backCrop'][$key]['x'], $req['backCrop'][$key]['y'])->save($path);
                     //1枚目のアップロード画像
-                    if($count === 1) {
+                    if ($count === 1) {
                         $slide = Slide::where('store_id', $store_id)->first();
-                        if(!$slide) {
+                        if (!$slide) {
                             //新規レコード
                             $slide = new Slide;
                             $slide['store_id'] = $store_id;
@@ -101,10 +118,9 @@ class RestaurantController extends Controller
                 $slide['image_path'] = $paths;
                 $slide->save();
                 //使用していない画像は削除
-                foreach (glob($dir . '*') as $file) if(is_file($file) && !in_array($file, $paths)) unlink($file);
+                foreach (glob($dir . '*') as $file) if (is_file($file) && !in_array($file, $paths)) unlink($file);
             }
             return $path;
-
         } catch (Exception $e) {
             Log::error($e);
             return null;

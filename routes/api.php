@@ -40,6 +40,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
             Route::get('/list', 'list');
             Route::get('/information', 'information');
             Route::post('/display_change', 'display_change');
+            Route::get('/sales_fetch', 'sales_fetch');
+            Route::post('/update_sales', 'update_sales');
         });
     });
     Route::controller(AdminRestaurant::class)->group(function () {

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\RestaurantInformation;
+use App\Models\SalesInformation;
 
 class RestaurantInformationSeeder extends Seeder
 {
@@ -60,6 +61,10 @@ class RestaurantInformationSeeder extends Seeder
             'area_id' => 2,
             'prefecture_id' => 14,
         ];
+        $sales['start_business'] = '10:00';
+        $sales['end_business'] = '23:00';
+        $sales['regular_holiday'] = 1;
+        $sales['late_reserve'] = '22:00';
         foreach ($city as $key => $c) {
             $datas['restaurant_name'] = 'テスト店舗' . $c . '店';
             $datas['restaurant_email'] = 'tenpo' . sprintf('%02d', $key) . '@test.com';
@@ -67,6 +72,8 @@ class RestaurantInformationSeeder extends Seeder
             $datas['address_after'] = 'テスト' . sprintf('%02d', $key) . 'ビル';
             $datas['unique_code'] = hash('crc32', $key + 1);
             RestaurantInformation::create($datas);
+            $sales['store_id'] = $key + 1;
+            SalesInformation::create($sales);
         }
     }
 }

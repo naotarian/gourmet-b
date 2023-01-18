@@ -52,6 +52,10 @@ class RestaurantInformation extends Model
     {
         return $this->hasOne(SubCategory::class, 'id', 'sub_category_id');
     }
+    public function sales_information()
+    {
+        return $this->hasOne(SalesInformation::class, 'store_id', 'id');
+    }
     public function slide()
     {
         return $this->hasOne(Slide::class, 'store_id', 'id');

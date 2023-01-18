@@ -87,8 +87,6 @@ class PortalTopController extends Controller
                         $entry_image = "data:" . $image_type . ";base64," . $img_base64;
                         $images[$key]['original'] = $entry_image;
                         $images[$key]['thumbnail'] = $entry_image;
-                        // array_push($images['original'], $entry_image);
-                        // array_push($images['thumbnail'], $entry_image);
                     }
                 }
             }
