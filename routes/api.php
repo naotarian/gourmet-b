@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\Admin\RestaurantController as AdminRestaurant;
 use App\Http\Controllers\Api\Portal\PortalTopController as PortalTop;
+use App\Http\Controllers\Api\Admin\SeatController as AdminSeat;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -42,6 +43,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
             Route::post('/display_change', 'display_change');
             Route::get('/sales_fetch', 'sales_fetch');
             Route::post('/update_sales', 'update_sales');
+        });
+    });
+    Route::prefix('seats')->group(function () {
+        Route::controller(AdminSeat::class)->group(function () {
+            Route::get('/seats_fetch', 'seats_fetch');
+            Route::post('/seats_register', 'seats_register');
         });
     });
     Route::controller(AdminRestaurant::class)->group(function () {
