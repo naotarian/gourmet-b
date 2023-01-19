@@ -55,6 +55,7 @@ class PortalTopController extends Controller
     public function store_detail(Request $request)
     {
         $store = RestaurantInformation::where('unique_code', $request['datas']['code'])
+            ->with('sales_information')
             ->with('lunch')
             ->with('dinner')
             ->with('main_category')

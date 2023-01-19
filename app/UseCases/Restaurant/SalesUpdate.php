@@ -15,7 +15,8 @@ class SalesUpdate
     $sales_information['end_business'] = $req['endOfBusiness'];
     $sales_information['regular_holiday'] = $req['regularHoliday'];
     $sales_information['late_reserve'] = $req['reserveLate'];
-    $sales_information['remarks'] = $req['remarks'];
+    $sales_information['time_remarks'] = $req['timeRemarks'];
+    $sales_information['regular_holiday_remarks'] = $req['regularHolidayRemarks'];
     if (!$sales_information->isDirty()) {
       $res = ['msg' => '変更がありません。'];
       return $res;
