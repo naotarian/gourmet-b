@@ -49,6 +49,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::controller(AdminSeat::class)->group(function () {
             Route::get('/seats_fetch', 'seats_fetch');
             Route::post('/seats_register', 'seats_register');
+            Route::post('/seats_update', 'seats_update');
         });
     });
     Route::controller(AdminRestaurant::class)->group(function () {
