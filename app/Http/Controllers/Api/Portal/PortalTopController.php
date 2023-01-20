@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Area;
 use App\Models\Prefecture;
 use App\Models\MainCategory;
+use App\Models\Seat;
 use App\Models\Budget;
 use App\Models\RestaurantInformation;
 use App\Http\Controllers\Api\CommonController;
+use Carbon\Carbon;
 
 
 class PortalTopController extends Controller
@@ -92,7 +94,55 @@ class PortalTopController extends Controller
                 }
             }
         }
-        $contents = ['store' => $store, 'images' => $images, 'test' => 'aaa'];
+        //予約カレンダー表示作成
+        $dow = [
+            '日',
+            '月',
+            '火',
+            '水',
+            '木',
+            '金',
+            '土',
+        ];
+        $today = Carbon::today();
+        $start = Carbon::today()->startOfWeek()->subDay(1);
+        $reserve_calendar = $this->reserve_arrow($start, 30 + $start->diffInDays($today));
+        $contents = ['store' => $store, 'images' => $images, 'test' => 'aaa', 'reserve_calendar' => $reserve_calendar];
         return response()->json($contents);
+    }
+    /**
+     * Undocumented function
+     *
+     * @param [date] $start
+     * @param [integer] $range
+     * @return void
+     */
+    public function reserve_arrow($start, $range)
+    {
+        $dow = [
+            '日',
+            '月',
+            '火',
+            '水',
+            '木',
+            '金',
+            '土',
+        ];
+        $reserve_calendar = [];
+        for ($i = 1; $i <= $range; $i++) {
+            $start_date = new Carbon($start);
+            $date = $start_date->addDay($i)->format('m/d');
+            $reserve_calendar[$i - 1]['date'] = $date;
+            $reserve_calendar[$i - 1]['seats'] = Seat::all()->toArray();
+            $reserve_calendar[$i - 1]['dow'] = $dow[$start_date->dayOfWeek];
+            if ($reserve_calendar[$i - 1]['seats'] > 3) {
+                $reserve_calendar[$i - 1]['status'] = '◎';
+            } elseif ($reserve_calendar[$i - 1]['seats'] > 2) {
+                $reserve_calendar[$i - 1]['status'] = '〇';
+            } else {
+                $reserve_calendar[$i - 1]['status'] = '×';
+            }
+        }
+        return array_chunk($reserve_calendar, 7);
     }
 }
