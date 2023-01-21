@@ -16,6 +16,8 @@ use Carbon\Carbon;
 
 class PortalTopController extends Controller
 {
+    public function __constract() {
+    }
     public function top()
     {
         //各種マスタ取得
@@ -95,19 +97,46 @@ class PortalTopController extends Controller
             }
         }
         //予約カレンダー表示作成
-        $dow = [
-            '日',
-            '月',
-            '火',
-            '水',
-            '木',
-            '金',
-            '土',
-        ];
         $today = Carbon::today();
         $start = Carbon::today()->startOfWeek()->subDay(1);
-        $reserve_calendar = $this->reserve_arrow($start, 30 + $start->diffInDays($today));
-        $contents = ['store' => $store, 'images' => $images, 'test' => 'aaa', 'reserve_calendar' => $reserve_calendar];
+        //今月末
+        $end_of_month = Carbon::now()->endOfMonth()->toDateString();
+        //今月初
+        $start_of_month = Carbon::now()->startOfMonth();
+        $reserve_calendar = array_chunk($this->reserve_arrow($start, $start->diffInDays($end_of_month)), 7);
+        $reserve_calendar_next = $this->reserve_arrow($end_of_month, 30 - $start->diffInDays($end_of_month));
+        //翌月用カレンダーが月曜始まりではない場合、空配列を挿入
+        $dow = [
+            '月' => 0,
+            '火' => 1,
+            '水' => 2,
+            '木' => 3,
+            '金' => 4,
+            '土' => 5,
+            '日' => 6,
+        ];
+        $addDay = $dow[$reserve_calendar_next[0]['dow']];
+        if($dow[$reserve_calendar_next[0]['dow']] !== 0) {
+            for($i = 0; $i < $addDay; $i ++) {
+                array_unshift($reserve_calendar_next, [
+                    'date' => '',
+                    'seats' => [],
+                    'dow' => '',
+                    'status' => '',
+                ]);
+            }
+        }
+        $reserve_calendar_next = array_chunk($reserve_calendar_next, 7);
+        $current_month = Carbon::today()->format('Y年m月');
+        $next_month = Carbon::now()->endOfMonth()->addDay(1)->format('Y年m月');
+        $contents = [
+            'store' => $store,
+            'images' => $images,
+            'reserve_calendar' => $reserve_calendar,
+            'reserve_calendar_next' => $reserve_calendar_next,
+            'current_month' => $current_month,
+            'next_month' => $next_month,
+        ];
         return response()->json($contents);
     }
     /**
@@ -135,14 +164,16 @@ class PortalTopController extends Controller
             $reserve_calendar[$i - 1]['date'] = $date;
             $reserve_calendar[$i - 1]['seats'] = Seat::all()->toArray();
             $reserve_calendar[$i - 1]['dow'] = $dow[$start_date->dayOfWeek];
-            if ($reserve_calendar[$i - 1]['seats'] > 3) {
+            if (count($reserve_calendar[$i - 1]['seats']) >= 3) {
                 $reserve_calendar[$i - 1]['status'] = '◎';
-            } elseif ($reserve_calendar[$i - 1]['seats'] > 2) {
+            } elseif (count($reserve_calendar[$i - 1]['seats']) >= 2) {
                 $reserve_calendar[$i - 1]['status'] = '〇';
+            } elseif(count($reserve_calendar[$i - 1]['seats']) >= 1) {
+                $reserve_calendar[$i - 1]['status'] = '△';
             } else {
                 $reserve_calendar[$i - 1]['status'] = '×';
             }
         }
-        return array_chunk($reserve_calendar, 7);
+        return $reserve_calendar;
     }
 }
