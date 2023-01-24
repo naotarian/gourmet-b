@@ -16,7 +16,8 @@ use Carbon\Carbon;
 
 class PortalTopController extends Controller
 {
-    public function __constract() {
+    public function __constract()
+    {
     }
     public function top()
     {
@@ -116,8 +117,8 @@ class PortalTopController extends Controller
             '日' => 6,
         ];
         $addDay = $dow[$reserve_calendar_next[0]['dow']];
-        if($dow[$reserve_calendar_next[0]['dow']] !== 0) {
-            for($i = 0; $i < $addDay; $i ++) {
+        if ($dow[$reserve_calendar_next[0]['dow']] !== 0) {
+            for ($i = 0; $i < $addDay; $i++) {
                 array_unshift($reserve_calendar_next, [
                     'date' => '',
                     'seats' => [],
@@ -129,6 +130,21 @@ class PortalTopController extends Controller
         $reserve_calendar_next = array_chunk($reserve_calendar_next, 7);
         $current_month = Carbon::today()->format('Y年m月');
         $next_month = Carbon::now()->endOfMonth()->addDay(1)->format('Y年m月');
+        //予約カレンダーに表示する時間の作成
+        $now = Carbon::now();
+        //何分区切りにするか
+        $separator_time = 15;
+        $reserve_time_list = [];
+        $reserve_push_time = $now->copy()->addMinute(($separator_time * ($i + 1)) - $now->minute % $separator_time)->format('H:i');
+        $num = 0;
+        while ($reserve_push_time <= $store['sales_information']['late_reserve']) {
+            $num++;
+            array_push($reserve_time_list, $now->copy()->addMinute(($separator_time * ($num)) - $now->minute % $separator_time)->format('H:i'));
+            $reserve_push_time = $now->copy()->addMinute(($separator_time * ($num)) - $now->minute % $separator_time)->format('H:i');
+        }
+        //最後の要素削除
+        array_pop($reserve_time_list);
+        $store['reserve_time_list'] = $reserve_time_list;
         $contents = [
             'store' => $store,
             'images' => $images,
@@ -168,7 +184,7 @@ class PortalTopController extends Controller
                 $reserve_calendar[$i - 1]['status'] = '◎';
             } elseif (count($reserve_calendar[$i - 1]['seats']) >= 2) {
                 $reserve_calendar[$i - 1]['status'] = '〇';
-            } elseif(count($reserve_calendar[$i - 1]['seats']) >= 1) {
+            } elseif (count($reserve_calendar[$i - 1]['seats']) >= 1) {
                 $reserve_calendar[$i - 1]['status'] = '△';
             } else {
                 $reserve_calendar[$i - 1]['status'] = '×';
