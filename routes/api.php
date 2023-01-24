@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\Admin\RestaurantController as AdminRestaurant;
 use App\Http\Controllers\Api\Portal\PortalTopController as PortalTop;
 use App\Http\Controllers\Api\Admin\SeatController as AdminSeat;
+use App\Http\Controllers\Api\Portal\ReserveController as PortalReserve;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -61,5 +62,10 @@ Route::controller(PortalTop::class)->group(function () {
         Route::get('/top', 'top');
         Route::post('/list', 'list');
         Route::post('/store/detail', 'store_detail');
+    });
+});
+Route::controller(PortalReserve::class)->group(function () {
+    Route::prefix('reserve')->group(function () {
+        Route::post('/reserve_session_save', 'reserve_session_save');
     });
 });
