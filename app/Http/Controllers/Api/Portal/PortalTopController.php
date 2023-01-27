@@ -176,7 +176,7 @@ class PortalTopController extends Controller
         $reserve_calendar = [];
         for ($i = 1; $i <= $range; $i++) {
             $start_date = new Carbon($start);
-            $date = $start_date->addDay($i)->format('m/d');
+            $date = $start_date->addDay($i)->format('Y/m/d');
             $reserve_calendar[$i - 1]['date'] = $date;
             $reserve_calendar[$i - 1]['seats'] = Seat::all()->toArray();
             $reserve_calendar[$i - 1]['dow'] = $dow[$start_date->dayOfWeek];

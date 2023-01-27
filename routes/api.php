@@ -68,5 +68,8 @@ Route::controller(PortalReserve::class)->group(function () {
     Route::prefix('reserve')->group(function () {
         Route::post('/reserve_session_save', 'reserve_session_save');
         Route::get('/reserve_session_fetch', 'reserve_session_fetch');
+        Route::post('/confirm', 'confirm');
+        Route::get('/confirm_session_fetch', 'confirm_session_fetch');
+        Route::post('/execution', 'execution');
     });
 });
