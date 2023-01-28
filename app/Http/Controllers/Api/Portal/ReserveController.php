@@ -18,9 +18,15 @@ class ReserveController extends Controller
 
     public function reserve_session_fetch(Request $req)
     {
+        //入力値のsessionがあれば表示
         $reserve_session = $req->session()->get('reserve_sessions');
-        // $contents = ['reserve_session' => $reserve_session];
-        return $reserve_session;
+        $confirm_session = [];
+        if ($req->session()->has('confirm_session')) {
+            $confirm_session = $req->session()->get('confirm_session');
+            $req->session()->forget('confirm_session');
+        }
+        $contents = ['reserve_session' => $reserve_session, 'confirm_session' => $confirm_session];
+        return $contents;
     }
 
     public function confirm(Request $req)
