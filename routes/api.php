@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Admin\RestaurantController as AdminRestaurant;
 use App\Http\Controllers\Api\Portal\PortalTopController as PortalTop;
 use App\Http\Controllers\Api\Admin\SeatController as AdminSeat;
 use App\Http\Controllers\Api\Portal\ReserveController as PortalReserve;
+use App\Http\Controllers\Api\Admin\ReserveController as AdminReserve;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,6 +52,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
             Route::get('/seats_fetch', 'seats_fetch');
             Route::post('/seats_register', 'seats_register');
             Route::post('/seats_update', 'seats_update');
+        });
+    });
+    Route::prefix('reserve')->group(function () {
+        Route::controller(AdminReserve::class)->group(function () {
+            Route::get('/list', 'list');
         });
     });
     Route::controller(AdminRestaurant::class)->group(function () {
