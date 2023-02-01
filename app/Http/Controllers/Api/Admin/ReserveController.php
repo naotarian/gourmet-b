@@ -16,4 +16,10 @@ class ReserveController extends Controller
         $res = ['reserve_datas' => $reserve_data];
         return response()->json($res);
     }
+    public function detail(Request $req)
+    {
+        $store_id = $req->session()->get('active_restaurant_id', $req['id']);
+        $reserve_data = Reserve_data::where('store_id', $store_id)->where('reserve_number', $req['reserveNumber'])->first();
+        return $reserve_data;
+    }
 }

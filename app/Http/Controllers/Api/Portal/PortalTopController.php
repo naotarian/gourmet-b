@@ -105,7 +105,8 @@ class PortalTopController extends Controller
         //今月初
         $start_of_month = Carbon::now()->startOfMonth();
         $reserve_calendar = array_chunk($this->reserve_arrow($start, $start->diffInDays($end_of_month)), 7);
-        $reserve_calendar_next = $this->reserve_arrow($end_of_month, 30 - $start->diffInDays($end_of_month));
+        $reserve_calendar_next = $this->reserve_arrow($end_of_month, $today->addMonth(1)->daysInMonth - $start->diffInDays($end_of_month) + 7);
+        \Log::info(31 - $start->diffInDays($end_of_month));
         //翌月用カレンダーが月曜始まりではない場合、空配列を挿入
         $dow = [
             '月' => 0,

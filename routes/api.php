@@ -57,6 +57,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::prefix('reserve')->group(function () {
         Route::controller(AdminReserve::class)->group(function () {
             Route::get('/list', 'list');
+            Route::post('/detail', 'detail');
         });
     });
     Route::controller(AdminRestaurant::class)->group(function () {
